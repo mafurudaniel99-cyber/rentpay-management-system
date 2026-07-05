@@ -1,0 +1,33 @@
+<?php
+/**
+ * shared/partials/public_header.php
+ * Shared top navigation for public (visitor-facing) pages: index, about, contact.
+ * Expects an optional $activePage variable ('home' | 'about' | 'contact').
+ */
+$activePage = $activePage ?? '';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><?= $pageTitle ?? 'RentPay' ?></title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/iconfont/tabler-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shared/assets/style.css">
+<link rel="stylesheet" href="/shared/assets/public.css">
+</head>
+<body>
+<nav class="public-nav">
+  <a class="brand" href="/index.php"><i class="ti ti-home-2"></i> RentPay</a>
+  <div class="nav-links">
+    <a href="/index.php" class="<?= $activePage==='home' ? 'active' : '' ?>">Home</a>
+    <a href="/about.php" class="<?= $activePage==='about' ? 'active' : '' ?>">About us</a>
+    <a href="/contact.php" class="<?= $activePage==='contact' ? 'active' : '' ?>">Contact</a>
+  </div>
+  <div class="nav-actions">
+    <a href="/authentication/login.php" class="btn btn-ghost">Log in</a>
+    <a href="/authentication/register.php" class="btn btn-brass">Register</a>
+  </div>
+</nav>
