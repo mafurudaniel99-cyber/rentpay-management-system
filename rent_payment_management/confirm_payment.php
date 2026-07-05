@@ -76,7 +76,7 @@ if (isPost() && $payment['status'] === 'PENDING') {
 <title>Confirm payment &mdash; RentPay</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/iconfont/tabler-icons.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/shared/assets/style.css">
+<link rel="stylesheet" href="<?= BASE_URL ?>/shared/assets/style.css">
 <style>body{display:flex;align-items:center;justify-content:center;min-height:100vh;}
 .box{max-width:380px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px;text-align:center;}
 .spin{width:34px;height:34px;border:3px solid var(--amber-bg);border-top-color:var(--amber);border-radius:50%;animation:sp .8s linear infinite;margin:0 auto 16px;}

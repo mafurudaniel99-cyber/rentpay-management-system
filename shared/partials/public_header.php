@@ -15,19 +15,19 @@ $activePage = $activePage ?? '';
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/iconfont/tabler-icons.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/shared/assets/style.css">
-<link rel="stylesheet" href="/shared/assets/public.css">
+<link rel="stylesheet" href="<?= BASE_URL ?>/shared/assets/style.css">
+<link rel="stylesheet" href="<?= BASE_URL ?>/shared/assets/public.css">
 </head>
 <body>
 <nav class="public-nav">
-  <a class="brand" href="/index.php"><i class="ti ti-home-2"></i> RentPay</a>
+  <a class="brand" href="<?= BASE_URL ?>/index.php"><i class="ti ti-home-2"></i> RentPay</a>
   <div class="nav-links">
-    <a href="/index.php" class="<?= $activePage==='home' ? 'active' : '' ?>">Home</a>
-    <a href="/about.php" class="<?= $activePage==='about' ? 'active' : '' ?>">About us</a>
-    <a href="/contact.php" class="<?= $activePage==='contact' ? 'active' : '' ?>">Contact</a>
+    <a href="<?= BASE_URL ?>/index.php" class="<?= $activePage==='home' ? 'active' : '' ?>">Home</a>
+    <a href="<?= BASE_URL ?>/about.php" class="<?= $activePage==='about' ? 'active' : '' ?>">About us</a>
+    <a href="<?= BASE_URL ?>/contact.php" class="<?= $activePage==='contact' ? 'active' : '' ?>">Contact</a>
   </div>
   <div class="nav-actions">
-    <a href="/authentication/login.php" class="btn btn-ghost">Log in</a>
-    <a href="/authentication/register.php" class="btn btn-brass">Register</a>
+    <a href="<?= BASE_URL ?>/authentication/login.php" class="btn btn-ghost">Log in</a>
+    <a href="<?= BASE_URL ?>/authentication/register.php" class="btn btn-brass">Register</a>
   </div>
 </nav>

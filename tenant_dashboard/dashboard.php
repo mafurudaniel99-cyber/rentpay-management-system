@@ -119,7 +119,7 @@ function badgeClass(string $status): string
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.44.0/iconfont/tabler-icons.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/shared/assets/style.css">
+<link rel="stylesheet" href="<?= BASE_URL ?>/shared/assets/style.css">
 </head>
 <body>
 <div class="app">

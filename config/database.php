@@ -5,6 +5,20 @@
  * Include this file, then call Database::getConnection().
  */
 
+if (!defined('BASE_URL')) {
+    /**
+     * BASE_URL tells every page where the project folder sits relative to
+     * your web server's document root. This is the ONLY line you need to
+     * change if you move the project folder or rename it.
+     *
+     * Examples:
+     *  - Site opened as http://localhost/rentpay-system/  -> '/rentpay-system'
+     *  - Site opened as http://localhost/                  -> ''  (project IS the document root)
+     *  - Live domain    https://rentpay.co.tz/              -> ''
+     */
+    define('BASE_URL', '/rentpay-system');
+}
+
 class Database
 {
     private static ?PDO $connection = null;

@@ -54,7 +54,7 @@ if (isPost()) {
 <meta charset="UTF-8">
 <title>Log in &mdash; RentPay</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/shared/assets/style.css">
+<link rel="stylesheet" href="<?= BASE_URL ?>/shared/assets/style.css">
 <style>
   body{display:flex;align-items:center;justify-content:center;min-height:100vh;}
   .auth-wrap{max-width:380px;width:100%;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px;}
