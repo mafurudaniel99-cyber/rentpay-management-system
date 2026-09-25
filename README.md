@@ -1,10 +1,10 @@
-# Rent-Management-System
+# rentpay-management-system
 
 ## Overview
 
-The Rent Management System is a professional multi-user property management platform designed to simplify communication, rent collection, tenant management, property monitoring, and financial tracking between landlords and tenants.
+The rentpay-management-system is a professional multi-user property management platform designed to simplify communication, rent collection, tenant management, property monitoring, and financial tracking between landlords and tenants.
 
-The system is built to support both small-scale and large-scale property management businesses. It can be deployed as a standalone application for a single landlord or as a SaaS (Software as a Service) platform where multiple landlords subscribe and manage their properties independently.
+The system is built to support both small-scale and large-scale property management businesses.
 
 This platform automates manual rental processes such as rent collection, invoice generation, maintenance tracking, room allocation, reporting, and tenant communication.
 
@@ -539,60 +539,84 @@ Potential future upgrades include:
 
 ---
 
-# Project Structure Example
-rent-management-system/
-│
-├── modules/
-│   ├── Authentication/
-│   ├── Landlords/
-│   ├── Tenants_Management/
-│   ├── Property_Management/
-│   ├── Rooms/
-│   ├── Rent_Payment/
-│   ├── Invoice_and_Report/
-│   ├── maintenance/
-│   ├── Expense_Management/
-│   ├── Notifications/
-│   ├── Reports/
-│   ├── Dashboard/
-│   └── subscriptions/
-|   
-│
+## Entry point
+
+`index.php` at the project root is the home page and entry point of the
+application (public property listings, search, links to About/Contact/
+Register/Login).
+
+## Folder structure
+
+```
+rentpay-system/
+├── index.php                        ← Home page (entry point)
+├── about.php                        ← About Us
+├── contact.php                      ← Contact Us (working form)
+├── config/database.php              ← PDO connection — EDIT your DB credentials here
+├── database/schema.sql              ← Full MySQL schema (import this first)
 ├── shared/
-│   ├── middleware/
-│   ├── utilities/
-│   ├── helpers/
-│   ├── constants/
-│   └── validators/
-│
-├── database/
-│
-├── uploads/
-│
-├── logs/
-│
-├── config/
-│
-├── tests/
-│
-└── README.md
+│   ├── assets/style.css             ← Dashboard design system
+│   ├── assets/public.css            ← Public page design system
+│   ├── partials/                    ← Shared header/footer for public pages
+│   ├── helpers/functions.php        ← sanitize(), notify(), formatMoney()...
+│   └── middleware/auth_middleware.php  ← requireRole(), session guards
+├── authentication/                  register.php · login.php · logout.php
+├── landlord_dashboard/dashboard.php ← Landlord dashboard (?view=... sections)
+├── tenant_dashboard/dashboard.php   ← Tenant dashboard
+├── admin_dashboard/dashboard.php    ← Admin dashboard
+├── property_management/             add_property · add_room · list_properties ·
+│                                     review_application · submit_application
+├── rent_payment_management/         initiate_payment · confirm_payment (simulated
+│                                     M-Pesa STK push) · list_payments · release_escrow
+├── invoice_and_receipt_management/  list_invoices · generate_receipt (printable)
+├── maintenance_request_management/  submit_request · update_status · list_requests
+├── disputes_management/             raise_dispute · resolve_dispute · list_disputes
+├── account_management/              verify_landlord · suspend_account
+├── expense_management/add_expense.php
+├── rental_agreement_management/upload_agreement.php
+├── notification/list_notifications.php
+├── reports_and_analytics/           income_report (landlord) · admin_report (system)
+├── contact_management/send_message.php
+└── uploads/                         verification_documents · agreements · maintenance_photos
+```
 
-# Installation Guide
+## Installation
 
-### Prerequisites
-* PHP (version 8.0 or higher recommended)
-* MySQL or PostgreSQL Database
-* Apache Web Server (XAMPP / WampServer) or Windows Subsystem for Linux (WSL) environment
-
-## Installation Steps
-
-1. **Clone the repository:**
+1. **Import the database**
    ```bash
-   git clone [https://github.com/mafurudaniel99-cyber/RentPay.git](https://github.com/mafurudaniel99-cyber/RentPay.git)
+   mysql -u root -p < database/schema.sql
+   ```
 
-### 2. Configure Database
+2. **Configure the database connection**
+   Edit `config/database.php` and set your host/user/password:
+   ```php
+   private static string $host   = "localhost";
+   private static string $dbName = "rentpay_db";
+   private static string $user   = "root";
+   private static string $pass   = "";
+   ```
 
-Create database and import SQL schema.
+3. **Create an admin account**
+   Admins are not self-registered from the public site. Insert one directly:
+   ```sql
+   INSERT INTO users (full_name, email, phone, password, role, status, created_at)
+   VALUES ('System Admin', 'admin@rentpay.co.tz', '+255700000000',
+           '<paste a password_hash() bcrypt value here>', 'ADMIN', 'ACTIVE', NOW());
+   ```
+   Generate the hash with: `php -r "echo password_hash('yourpassword', PASSWORD_BCRYPT);"`
+
+4. **Serve the project**
+   Point your web server's document root at this folder (Apache/XAMPP/WampServer),
+   or for quick local testing:
+   ```bash
+   php -S localhost:8000
+   ```
+   Then visit `http://localhost:8000/index.php`.
+
+5. **Uploads folder permissions**
+   Ensure `uploads/verification_documents`, `uploads/agreements`, and
+   `uploads/maintenance_photos` are writable by the web server.
+
 
 ### 3. Configure Environment Variables
 
@@ -626,8 +650,37 @@ It is scalable, secure, and suitable for both small and enterprise-level propert
 
 ---
 
-# Author
+## User flow summary
 
-Developed By Daniel Japhet Mafuru.
-[mafurudaniel99@gmail.com]
-The professional property management and SaaS-based rental business operations.
+- **Visitor** → browses `index.php`, registers as Tenant or Landlord.
+- **Landlord** → registers (status `PENDING_REVIEW`) → uploads BRELA/PDPC docs →
+  waits for Admin approval → adds properties/rooms → reviews tenant applications →
+  manages maintenance, expenses, and rental agreements.
+- **Tenant** → registers (auto `ACTIVE`) → browses rooms → applies → pays the
+  first invoice via the simulated M-Pesa STK flow → funds are held in escrow →
+  confirms move-in (or raises a dispute) → escrow is released to the landlord.
+- **Admin** → approves/rejects landlords → monitors the escrow ledger →
+  arbitrates open disputes (refund tenant / release landlord) → suspends
+  fraudulent accounts → generates system reports.
+
+## Notes on the simulated M-Pesa flow
+
+`rent_payment_management/confirm_payment.php` plays the role of the real
+M-Pesa Daraja API callback for demonstration purposes. In production, replace
+the "I've entered my PIN" button with a real STK Push request in
+`initiate_payment.php`, and have Safaricom's servers call a public callback
+endpoint instead of the tenant confirming manually.
+
+## Tested
+
+This build was verified end-to-end against a live MySQL instance covering:
+registration, login, landlord approval, property/room creation, tenant
+application + approval, invoice generation, payment + escrow hold, maintenance
+request handling, dispute raising + admin arbitration + wallet crediting, and
+the public contact form — all without PHP errors, and with role-based access
+control confirmed (403 on cross-role access).
+
+
+# Author
+a project team.
+
